@@ -10,6 +10,7 @@ const GenreSchema = Schema({
     type: String,
     required: true,
     minlength: 3,
+    maxlength: 60
   },
 });
 
@@ -21,8 +22,8 @@ async function validateGenre(genre) {
     name: Joi.string().min(3).required(),
   });
 
-  await Schema.validateAsync(genre);
+  await Schema.validate(genre);
 }
 
 exports.validate = validateGenre;
-exports.Genre = Genre
+exports.Genre = Genre;

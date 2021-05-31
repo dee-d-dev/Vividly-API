@@ -20,7 +20,6 @@ route.post("/", async (req, res) => {
   let genre = new Genre({
     name: req.body.name,
   });
-
   const { error } = validate(req.body);
 
   if (!genre) {
@@ -32,16 +31,16 @@ route.post("/", async (req, res) => {
 });
 
 route.put("/:id", async (req, res) => {
+  const { error } = validate(req.body);
+  if (!genre) {
+    res.status(404).send("We cant find this page");
+  }
+
   const genre = await Genre.findByIdAndUpdate(
     req.params.id,
     { name: req.body.name },
     { new: true }
   );
-
-  const { error } = validate(req.body);
-  if (!genre) {
-    res.status(404).send("We cant find this page");
-  }
 
   res.send(genre);
 });
