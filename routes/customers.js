@@ -13,7 +13,11 @@ route.get("/", async (req, res) => {
 });
 
 route.post("/", async (req, res) => {
-  const { error } = validate(req.body);
+  try{
+    await validate.validateAsync(req.body);
+  }catch(error){
+    return res.send(error.details[0].message)
+  }
   let customer = await Customer({
     name: req.body.name,
     phone: req.body.phone,

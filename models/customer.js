@@ -16,15 +16,13 @@ const customerSchema = Schema({
 const Customer = mongoose.model("Customer", customerSchema);
 
 
-async function validateCustomer(customer) {
-  const Schema = Joi.object({
-    name: Joi.string().min(5).required(),
-    phone: Joi.number.number().min(11).max(11).required(),
-    isGold: Joi.boolean(),
-  });
 
-  await Schema.validateAsync(customer);
-}
+const inputSchema = Joi.object({
+  name: Joi.string().min(5).required(),
+  phone: Joi.number().min(11).max(11).required(),
+  isGold: Joi.boolean(),
+});
+
 
 exports.Customer = Customer;
-exports.validate = validateCustomer;
+exports.validate = inputSchema;

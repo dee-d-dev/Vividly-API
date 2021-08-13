@@ -17,11 +17,15 @@ route.get("/:id", async (req, res) => {
 });
 
 route.post("/", async (req, res) => {
+  try{
+    await validate.validateAsync(req.body);
+  } catch(err){
+    return res.send(err.details[0].message)
+  }
   let genre = new Genre({
     name: req.body.name,
   });
-  const { error } = validate(req.body);
-
+  
   if (!genre) {
     return res.status(400).send(result.error.details[0].message);
   }
@@ -31,9 +35,10 @@ route.post("/", async (req, res) => {
 });
 
 route.put("/:id", async (req, res) => {
-  const { error } = validate(req.body);
-  if (!genre) {
-    res.status(404).send("We cant find this page");
+    try{
+    await validate(req.body);
+  } catch(err){
+    return res.send(err.details[0].message)
   }
 
   const genre = await Genre.findByIdAndUpdate(
@@ -42,6 +47,9 @@ route.put("/:id", async (req, res) => {
     { new: true }
   );
 
+  if (!genre) {
+    res.status(404).send("We cant find this page");
+  }
   res.send(genre);
 });
 
