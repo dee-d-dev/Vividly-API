@@ -36,5 +36,5 @@ const inputSchema = Joi.object({
 
 
 
-exports.UserModel = User ;
+exports.User = User ;
 exports.validate = inputSchema;

@@ -19,7 +19,7 @@ const Customer = mongoose.model("Customer", customerSchema);
 
 const inputSchema = Joi.object({
   name: Joi.string().min(5).required(),
-  phone: Joi.number().min(11).max(11).required(),
+  phone: Joi.string().max(48).required(),
   isGold: Joi.boolean(),
 });
 
