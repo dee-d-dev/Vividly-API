@@ -1,6 +1,7 @@
 const express = require("express");
 const route = express.Router();
 const { Genre, validate } = require("../models/genre");
+const auth = require("../middleware/auth");
 
 route.get("/", async (req, res) => {
   const genres = await Genre.find().sort({ name: 1 });
@@ -16,16 +17,16 @@ route.get("/:id", async (req, res) => {
   res.send(genre);
 });
 
-route.post("/", async (req, res) => {
-  try{
+route.post("/", auth, async (req, res) => {
+  try {
     await validate.validateAsync(req.body);
-  } catch(err){
-    return res.send(err.details[0].message)
+  } catch (err) {
+    return res.send(err.details[0].message);
   }
   let genre = new Genre({
     name: req.body.name,
   });
-  
+
   if (!genre) {
     return res.status(400).send(result.error.details[0].message);
   }
@@ -35,10 +36,10 @@ route.post("/", async (req, res) => {
 });
 
 route.put("/:id", async (req, res) => {
-    try{
+  try {
     await validate(req.body);
-  } catch(err){
-    return res.send(err.details[0].message)
+  } catch (err) {
+    return res.send(err.details[0].message);
   }
 
   const genre = await Genre.findByIdAndUpdate(
