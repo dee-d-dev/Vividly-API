@@ -6,7 +6,7 @@ const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const config = require("config");
 const jwt = require("jsonwebtoken");
-const auth = require("../middleware/auth")
+const auth = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   const users = await User.find();
