@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const Fawn = require("fawn");
+const auth = require("../middleware/auth");
 
 Fawn.init(mongoose);
 
@@ -13,12 +14,11 @@ router.get("/", async (req, res) => {
   res.send(rentals);
 });
 
-router.post("/", async (req, res) => {
-  try{
+router.post("/", auth, async (req, res) => {
+  try {
     await validate.validateAsync(req.body);
-  }catch(error){
-
-   return res.status(400).send(error.details[0].message);
+  } catch (error) {
+    return res.status(400).send(error.details[0].message);
   }
 
   const customer = await Customer.findById(req.body.customerId);

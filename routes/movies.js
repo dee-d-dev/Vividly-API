@@ -3,16 +3,17 @@ const { Genre } = require("../models/genre");
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   const movies = await Movie.find().sort("name");
   res.send(movies);
 });
 
-router.post("/", async (req, res) => {
-  try{
+router.post("/", auth, async (req, res) => {
+  try {
     await validate.validateAsync(req.body);
-  }catch(error){
+  } catch (error) {
     return res.status(400).send(error.details[0].message);
   }
 
@@ -34,9 +35,11 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  try{
+  try {
     await validate.validateAsync(req.body);
-  }catch(error) {return res.status(400).send(error.details[0].message)};
+  } catch (error) {
+    return res.status(400).send(error.details[0].message);
+  }
 
   const genre = await Genre.findById(req.body.genreId);
   if (!genre) return res.status(400).send("Invalid genre.");
