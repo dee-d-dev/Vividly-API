@@ -4,8 +4,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app",
+    "start": "node app",
     "test": "jest --watchAll --verbose"
+  },
+  "engines":{
+    "node": "14.15.4"
   },
   "author": "",
   "license": "ISC",
